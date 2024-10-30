@@ -266,7 +266,7 @@ class CaproverAPI:
 
         :param one_click_app_name: one click app name
         :param namespace: a namespace to use for all services
-            inside the one-click app
+            inside the one-click app (optional)
         :param app_variables: dict containing required app variables
         :param automated: set to true
             if you have supplied all required variables
@@ -274,7 +274,10 @@ class CaproverAPI:
         :return dict containing the deployment "status" and "description".
         """
         app_variables = app_variables or {}
-        cap_app_name = "{}-{}".format(namespace, one_click_app_name)
+        if namespace:
+            cap_app_name = "{}-{}".format(namespace, one_click_app_name)
+        else:
+            cap_app_name = one_click_app_name
         raw_app_definition = self._download_one_click_app_defn(
             one_click_repository, one_click_app_name
         )
