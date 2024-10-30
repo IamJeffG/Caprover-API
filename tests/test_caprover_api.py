@@ -222,3 +222,13 @@ class TestUpdateApp(unittest.TestCase):
             {"containerPort": "443", "hostPort": "443"},
         ]
         self.assertEqual(post_data["ports"], expected)
+
+    def test_add_http_auth(self):
+        self.api.update_app(
+            "test_app", http_auth={"user": "admin", "password": "s3cret!"}
+        )
+        post_data = json.loads(self.api.session.post.call_args[1]["data"])
+
+        self.assertEqual(
+            post_data["httpAuth"], {"user": "admin", "password": "s3cret!"}
+        )

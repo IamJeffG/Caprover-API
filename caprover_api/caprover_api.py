@@ -535,7 +535,7 @@ class CaproverAPI:
         persistent_directories: list = None, container_http_port: int = None,
         description: str = None, service_update_override: str = None,
         pre_deploy_function: str = None, app_push_webhook: dict = None,
-        repo_info: dict = None, **kwargs
+        repo_info: dict = None, http_auth: dict = None, **kwargs
     ):
         """
         :param app_name: name of the app you want to update
@@ -561,6 +561,8 @@ class CaproverAPI:
         :param app_push_webhook:
         :param repo_info: dict with repo info
             fields repo, user, password, sshKey, branch
+        :param http_auth: dict with http auth info
+            fields user, password
         :return: dict
         """
         current_app_info = self.get_app(app_name=app_name)
@@ -628,6 +630,7 @@ class CaproverAPI:
             "description": description,
             "appPushWebhook": app_push_webhook,
             "serviceUpdateOverride": service_update_override,
+            "httpAuth": http_auth,
         }
         for k, v in _data.items():
             if v is None:
