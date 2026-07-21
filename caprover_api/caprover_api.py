@@ -419,15 +419,15 @@ class CaproverAPI:
                         service_override_dict, default_style="|"
                     )
 
-                # create app
-                self.create_app(
-                    app_name=service_name,
-                    has_persistent_data=has_persistent_data
-                )
+                image_name = service_data.get("image")
+                docker_file_lines = caprover_extras.get("dockerfileLines")
 
-                # update app
-                self.update_app(
+                # create + update + deploy in one call
+                self.create_and_update_app(
                     app_name=service_name,
+                    has_persistent_data=has_persistent_data,
+                    image_name=image_name,
+                    docker_file_lines=docker_file_lines,
                     instance_count=1,
                     persistent_directories=persistent_directories,
                     environment_variables=environment_variables,
@@ -435,13 +435,6 @@ class CaproverAPI:
                     container_http_port=container_http_port,
                     serviceUpdateOverride=service_update_override,
                     tags=tags,
-                )
-                image_name = service_data.get("image")
-                docker_file_lines = caprover_extras.get("dockerfileLines")
-                self.deploy_app(
-                    service_name,
-                    image_name=image_name,
-                    docker_file_lines=docker_file_lines
                 )
                 apps_deployed.append(service_name)
         return {
